@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.local
+.DS_Store
+Thumbs.db
+
+# 画板备份文件（二进制，体积大，不进版本库）
+backup/*.tldr
+
+# 需求规格文档，仅本地保留
+REQUIREMENTS.md

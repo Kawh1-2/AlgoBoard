@@ -1,0 +1,266 @@
+:root {
+  --bar-bg: #f7f7f5;
+  --bar-border: #e3e2de;
+  --tab-fg: #5c5c57;
+  --tab-hover-bg: #eceae4;
+  --tab-active-bg: #ffffff;
+  --tab-active-fg: #1a1a18;
+  --tab-active-border: #d5d3cc;
+  --add-fg: #8a8a83;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bar-bg: #1c1c1b;
+    --bar-border: #2e2e2c;
+    --tab-fg: #a3a29c;
+    --tab-hover-bg: #2a2a28;
+    --tab-active-bg: #333331;
+    --tab-active-fg: #f2f1ec;
+    --tab-active-border: #454542;
+    --add-fg: #7d7c76;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei',
+    'PingFang SC', sans-serif;
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.board-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+  flex: 0 0 40px;
+  padding: 0 10px;
+  background: var(--bar-bg);
+  border-bottom: 1px solid var(--bar-border);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  user-select: none;
+}
+
+.board-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.board-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 6px 0 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--tab-fg);
+  font-size: 12.5px;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  max-width: 190px;
+  overflow: hidden;
+}
+
+.board-tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 关闭按钮：平时隐藏，悬停标签时淡出显示 */
+.board-tab-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.board-tab:hover .board-tab-close {
+  opacity: 0.45;
+}
+
+.board-tab-close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--tab-active-fg);
+}
+
+.board-tab:hover {
+  background: var(--tab-hover-bg);
+}
+
+.board-tab.is-active {
+  background: var(--tab-active-bg);
+  border-color: var(--tab-active-border);
+  color: var(--tab-active-fg);
+}
+
+.board-tab-input {
+  height: 26px;
+  width: 120px;
+  padding: 0 8px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: var(--tab-active-fg);
+  background: var(--tab-active-bg);
+  border: 1px solid var(--tab-active-border);
+  border-radius: 6px;
+  outline: none;
+}
+
+.board-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--add-fg);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.board-add:hover {
+  background: var(--tab-hover-bg);
+  color: var(--tab-active-fg);
+}
+
+.canvas-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* 数组格子的右键颜色菜单 */
+.algo-menu {
+  position: fixed;
+  z-index: 9999;
+  width: 182px;
+  padding: 8px;
+  background: var(--tab-active-bg);
+  border: 1px solid var(--tab-active-border);
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.16);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  user-select: none;
+}
+
+.algo-menu-label {
+  margin: 2px 0 7px;
+  font-size: 11px;
+  color: var(--tab-fg);
+  letter-spacing: 0.02em;
+}
+
+.algo-swatches {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.algo-swatch {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.algo-swatch:hover {
+  transform: scale(1.08);
+}
+
+.algo-swatch.is-active {
+  outline: 2px solid var(--tab-active-fg);
+  outline-offset: 1px;
+}
+
+.algo-menu-text-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 5px 0;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--tab-fg);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.algo-menu-text-btn:hover {
+  background: var(--tab-hover-bg);
+  color: var(--tab-active-fg);
+}
+
+.algo-menu-divider {
+  height: 1px;
+  margin: 8px 0;
+  background: var(--tab-active-border);
+}
+
+.algo-menu-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.algo-menu-actions button {
+  flex: 1 1 0;
+  padding: 5px 0;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--tab-fg);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.algo-menu-actions button:hover:not(:disabled) {
+  background: var(--tab-hover-bg);
+  color: var(--tab-active-fg);
+}
+
+.algo-menu-actions button.is-danger:hover:not(:disabled) {
+  background: rgba(226, 75, 74, 0.14);
+  color: #e24b4a;
+}
+
+.algo-menu-actions button:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
