@@ -29,16 +29,18 @@ type Props = {
   cellColor: TLDefaultColorStyle | null
   borderColor: TLDefaultColorStyle
   canDelete: boolean
+  indexStart: number
   onPickCellColor: (value: TLDefaultColorStyle | null) => void
   onPickBorderColor: (value: TLDefaultColorStyle) => void
   onInsertBefore: () => void
   onInsertAfter: () => void
   onDelete: () => void
+  onToggleIndexStart: () => void
   onClose: () => void
 }
 
 /**
- * 单格右键菜单：文字颜色、边框颜色、插入 / 删除格子。
+ * 单格右键菜单：文字颜色、边框颜色、下标起始值、插入 / 删除格子。
  *
  * 两个关键设计：
  *
@@ -55,11 +57,13 @@ export function CellColorMenu({
   cellColor,
   borderColor,
   canDelete,
+  indexStart,
   onPickCellColor,
   onPickBorderColor,
   onInsertBefore,
   onInsertAfter,
   onDelete,
+  onToggleIndexStart,
   onClose,
 }: Props) {
   const editor = useEditor()
@@ -101,6 +105,7 @@ export function CellColorMenu({
       if (action === 'insert-before') return onInsertBefore()
       if (action === 'insert-after') return onInsertAfter()
       if (action === 'delete') return onDelete()
+      if (action === 'toggle-index') return onToggleIndexStart()
 
       const value = target.dataset.color
       const group = target.dataset.group
@@ -113,7 +118,14 @@ export function CellColorMenu({
 
     el.addEventListener('pointerdown', handler, true)
     return () => el.removeEventListener('pointerdown', handler, true)
-  }, [onPickCellColor, onPickBorderColor, onInsertBefore, onInsertAfter, onDelete])
+  }, [
+    onPickCellColor,
+    onPickBorderColor,
+    onInsertBefore,
+    onInsertAfter,
+    onDelete,
+    onToggleIndexStart,
+  ])
 
   const swatches = (group: 'cell' | 'border', current: TLDefaultColorStyle | null) => (
     <div className="algo-swatches">
@@ -153,6 +165,12 @@ export function CellColorMenu({
 
       <div className="algo-menu-label">边框颜色</div>
       {swatches('border', borderColor)}
+
+      <div className="algo-menu-divider" />
+
+      <button type="button" className="algo-menu-text-btn" data-action="toggle-index">
+        下标从 {indexStart === 0 ? 1 : 0} 开始
+      </button>
 
       <div className="algo-menu-divider" />
 

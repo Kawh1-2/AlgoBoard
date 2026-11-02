@@ -336,6 +336,15 @@ function ArrayComponent({ shape }: { shape: ArrayShape }) {
     })
   }
 
+  /** 下标在 0 起和 1 起之间切换 */
+  const toggleIndexStart = () => {
+    editor.updateShape<ArrayShape>({
+      id: shape.id,
+      type: 'algo-array',
+      props: { indexStart: indexStart === 0 ? 1 : 0 },
+    })
+  }
+
   const border = `${BORDER_WIDTH}px solid ${strokeColorValue}`
 
   return (
@@ -506,6 +515,7 @@ function ArrayComponent({ shape }: { shape: ArrayShape }) {
           cellColor={(cellColors[menu.index] ?? null) as TLDefaultColorStyle | null}
           borderColor={strokeColor as TLDefaultColorStyle}
           canDelete={count > 1}
+          indexStart={indexStart}
           onPickCellColor={(value) => {
             setCellColor(menu.index, value)
             setMenu(null)
@@ -524,6 +534,10 @@ function ArrayComponent({ shape }: { shape: ArrayShape }) {
           }}
           onDelete={() => {
             deleteCell(menu.index)
+            setMenu(null)
+          }}
+          onToggleIndexStart={() => {
+            toggleIndexStart()
             setMenu(null)
           }}
           onClose={() => setMenu(null)}
