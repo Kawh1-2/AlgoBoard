@@ -264,3 +264,34 @@ body {
   opacity: 0.32;
   cursor: default;
 }
+
+/* 导出 / 导入备份按钮：推到标签条最右侧 */
+.board-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+
+.board-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--tab-fg);
+  cursor: pointer;
+}
+
+.board-tool-btn:hover:not(:disabled) {
+  background: var(--tab-hover-bg);
+  color: var(--tab-active-fg);
+}
+
+.board-tool-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}

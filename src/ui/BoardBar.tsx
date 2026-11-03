@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useValue, type Editor, type TLPageId } from 'tldraw'
+import { exportBackup, importBackup } from './backup'
 
 type Props = {
   editor: Editor | null
@@ -113,6 +114,45 @@ export default function BoardBar({ editor }: Props) {
       <button type="button" className="board-add" title="新建画板" onClick={handleAdd}>
         +
       </button>
+
+      <div className="board-actions">
+        <button
+          type="button"
+          className="board-tool-btn"
+          title="导出备份（.tldr）"
+          aria-label="导出备份"
+          disabled={!editor}
+          onClick={() => editor && exportBackup(editor)}
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path
+              d="M7 1.5v7.5m0 0L4.2 6.2M7 9l2.8-2.8M2 10.5v1.2A.8.8 0 0 0 2.8 12.5h8.4a.8.8 0 0 0 .8-.8v-1.2"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          className="board-tool-btn"
+          title="导入备份（覆盖当前内容）"
+          aria-label="导入备份"
+          disabled={!editor}
+          onClick={() => editor && importBackup(editor)}
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path
+              d="M7 9V1.5m0 0L4.2 4.3M7 1.5l2.8 2.8M2 10.5v1.2a.8.8 0 0 0 .8.8h8.4a.8.8 0 0 0 .8-.8v-1.2"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   )
 }
